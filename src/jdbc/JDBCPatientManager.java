@@ -42,23 +42,27 @@ public class JDBCPatientManager implements PatientManager {
         prep.close();
     }
 
-    
     @Override
-    public int getPatientId(String email, String password) throws SQLException {
+    public int getPatientId(String email, String password) {
         String sql = "SELECT patientId FROM patients WHERE email = ? AND password = ?";
-        PreparedStatement prep = manager.getConnection().prepareStatement(sql);
-        int patientId = 0;
-        prep.setString(1, email);
-        prep.setString(2, password);
-        ResultSet rs = prep.executeQuery();
-        while(rs.next()){
-        patientId = rs.getInt("patientId");
+        try {
+            PreparedStatement prep = manager.getConnection().prepareStatement(sql);
+            int patientId = 0;
+            prep.setString(1, email);
+            prep.setString(2, password);
+            ResultSet rs = prep.executeQuery();
+            while (rs.next()) {
+                patientId = rs.getInt("patientId");
+                return patientId;
+            }
+            prep.close();
+            rs.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        prep.close();
-        rs.close();
-        return patientId;   
+        return 0;
     }
-    
+
     @Override
     public Patient searchPatientById(int patientId) throws SQLException {
         Patient p = null;
@@ -76,7 +80,7 @@ public class JDBCPatientManager implements PatientManager {
             byte[] password = rs.getBytes("password");
             String symptoms = rs.getString("symptoms");
             String bitalino = rs.getString("bitalino");
-            
+
             p = new Patient(patientId, name, surname, gender, birthDate, bloodType, email, password, symptoms, bitalino);
         }
         prep.close();
@@ -102,7 +106,7 @@ public class JDBCPatientManager implements PatientManager {
             byte[] password = rs.getBytes("password");
             String symptoms = rs.getString("symptoms");
             String bitalino = rs.getString("bitalino");
-            
+
             p = new Patient(id, name, surname, gender, birthDate, bloodType, email, password, symptoms, bitalino);
             patients.add(p);
         }
@@ -129,7 +133,7 @@ public class JDBCPatientManager implements PatientManager {
             byte[] password = rs.getBytes("password");
             String symptoms = rs.getString("symptoms");
             String bitalino = rs.getString("bitalino");
-            
+
             p = new Patient(id, name, surname, gender, birthDate, bloodType, email, password, symptoms, bitalino);
             patients.add(p);
         }
@@ -186,17 +190,18 @@ public class JDBCPatientManager implements PatientManager {
             ResultSet rs = prep.executeQuery();
             if (rs.next()) {
                 p = new Patient(rs.getInt("patientId"), rs.getString("name"),
-                    rs.getString("surname"), rs.getString("gender"),
-                    rs.getDate("birthDate"), rs.getString("bloodType"),
-                    rs.getString("email"), rs.getBytes("password"), rs.getString("symptoms"),
-                    rs.getString("bitalino"));
+                        rs.getString("surname"), rs.getString("gender"),
+                        rs.getDate("birthDate"), rs.getString("bloodType"),
+                        rs.getString("email"), rs.getBytes("password"), rs.getString("symptoms"),
+                        rs.getString("bitalino"));
             }
             prep.close();
             rs.close();
             return p;
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } /*catch (NoResultException nre) {
+        }
+        /*catch (NoResultException nre) {
             return null;
         }*/
         return null;
