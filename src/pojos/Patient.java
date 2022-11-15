@@ -22,8 +22,8 @@ public class Patient implements Serializable {
     private String name;
     private String surname;
     private String gender;
-    private final Date birthDate;
-    private final String bloodType;
+    private Date birthDate;
+    private String bloodType;
     private final String email;
     private byte[] password;
     private String symptoms;
@@ -56,10 +56,11 @@ public class Patient implements Serializable {
 
     }
 
-    /*public Patient(Integer patientId, String email, byte[] hash) {
+    public Patient (Integer patientId, String email, byte[] hash) {
         this.email = email;
         this.password = hash;
-    }*/
+    }
+    
     public Integer getPatientId() {
         return patientId;
     }
