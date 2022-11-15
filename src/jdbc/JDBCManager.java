@@ -40,7 +40,7 @@ public class JDBCManager {
         return c;
     }
 
-    private void createTables() {
+    public void createTables() {
         // Create Tables
         try {
             Statement stmt = c.createStatement();

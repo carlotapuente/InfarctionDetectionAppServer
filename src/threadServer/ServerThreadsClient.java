@@ -43,8 +43,8 @@ public class ServerThreadsClient implements Runnable {
         BufferedReader bufferedReader = null;
         InputStream inputStream = null;
         try{
-            inputStream = socket.getInputStream();
-            int opcion = 0;
+            //inputStream = socket.getInputStream();
+            /*int opcion = 0;
             try{
             opcion = inputStream.read();
             }catch(IOException e){
@@ -73,12 +73,12 @@ public class ServerThreadsClient implements Runnable {
                     }
                     break;
                 case 4:
-                    try{
+                    */try{
                         register();
                     }catch(IOException | SQLException e){
                         e.printStackTrace();
                     }
-                    break;
+                /*    break;
                 case 5:
                     try{
                         login();
@@ -86,45 +86,74 @@ public class ServerThreadsClient implements Runnable {
                         e.printStackTrace();
                     }
                     break;
-            }
-        }catch(IOException ex){
-            Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
+            }*/
+        }//catch(IOException ex){
+           // Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
+        //}
+        finally {
+          /*try {
                 bufferedReader.close();
             } catch (IOException ex) {
                 Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            try {
+            }*/
+            /*try {
                 inputStream.close();
             } catch (IOException ex) {
                 Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
         }
     }
     
     public void register() throws IOException, SQLException{
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         String line;
-        List<String> atributes = new ArrayList();
-        while ((line = bufferedReader.readLine()) != null) {
-            atributes.add(line);
-        }
-        String name = atributes.get(0);
+        String[] atributes = new String[10];
+        //System.out.println(bufferedReader.readLine());
+        //System.out.println(bufferedReader.readLine());
+        /*for(int i = 0; i<10; i++){
+        //while ((line = bufferedReader.readLine()) != null) {
+            atributes[i] = bufferedReader.readLine();
+//atributes.add(line);
+            
+        }*/
+        //System.out.println(atributes);
+        //int patientId = Integer.parseInt(bufferedReader.readLine());
+        String name = bufferedReader.readLine();
         System.out.println(name);
-        String surname = atributes.get(1);
+        String surname = bufferedReader.readLine();
         System.out.println(surname);
-        String gender = atributes.get(2);
+        String gender = bufferedReader.readLine();
         System.out.println(gender);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("DD-MM-YYYY");
-        LocalDate birthDate = LocalDate.parse(atributes.get(3), formatter);
-        String bloodType = atributes.get(4);
-        String email = atributes.get(5);
-        byte[] password = atributes.get(6).getBytes();
-        String symptoms = atributes.get(7);
-        String bitalino = atributes.get(8);
         
-        Patient patient = new Patient(name, surname, gender, birthDate, bloodType, email, password, symptoms, bitalino);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-DD");
+        //LocalDate d = LocalDate.parse(bufferedReader.readLine(), formatter);
+        Date birthDate = Date.valueOf(bufferedReader.readLine());
+        System.out.println(birthDate);
+        String bloodType = bufferedReader.readLine();
+        String email = bufferedReader.readLine();
+        byte[] password = bufferedReader.readLine().getBytes();
+        System.out.println(password);
+        String symptoms = bufferedReader.readLine();
+        System.out.println(symptoms);
+        String bitalino = bufferedReader.readLine();
+        System.out.println(bitalino);
+        
+        
+        /*System.out.println(name);
+        String surname = atributes[2];
+        System.out.println(surname);
+        String gender = atributes[3];
+        System.out.println(gender);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-DD");
+        LocalDate birthDate = LocalDate.parse(atributes[4], formatter);
+        String bloodType = atributes[5];
+        String email = atributes[6];
+        byte[] password = atributes[7].getBytes();
+        String symptoms = atributes[8];
+        String bitalino = atributes[9];*/
+        
+        Patient patient = new Patient(name, surname, gender, birthDate,  bloodType, email, password, symptoms, bitalino);
+        System.out.println(patient);
         patientManager.addPatient(patient);
         System.out.println(patient);
     }
