@@ -43,15 +43,16 @@ public class ServerThreadsClient implements Runnable {
         BufferedReader bufferedReader = null;
         InputStream inputStream = null;
         try{
-            //inputStream = socket.getInputStream();
-            /*int opcion = 0;
+            inputStream = socket.getInputStream();
+            int opcion = 0;
             try{
             opcion = inputStream.read();
+                System.out.println(opcion);
             }catch(IOException e){
                 e.printStackTrace();
             }
             switch(opcion){
-                case 1:
+                /*case 1:
                     try{
                         sendPatient();
                     }catch(IOException | SQLException e){
@@ -71,14 +72,14 @@ public class ServerThreadsClient implements Runnable {
                     }catch(IOException | SQLException e){
                         e.printStackTrace();
                     }
-                    break;
+                    break;*/
                 case 4:
-                    */try{
+                    try{
                         register();
                     }catch(IOException | SQLException e){
                         e.printStackTrace();
                     }
-                /*    break;
+                  break;
                 case 5:
                     try{
                         login();
@@ -86,11 +87,11 @@ public class ServerThreadsClient implements Runnable {
                         e.printStackTrace();
                     }
                     break;
-            }*/
-        }//catch(IOException ex){
-           // Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
-        //}
-        finally {
+            }
+        }catch(IOException ex){
+            Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //finally {
           /*try {
                 bufferedReader.close();
             } catch (IOException ex) {
@@ -101,7 +102,7 @@ public class ServerThreadsClient implements Runnable {
             } catch (IOException ex) {
                 Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
             }*/
-        }
+        //}
     }
     
     public void register() throws IOException, SQLException{

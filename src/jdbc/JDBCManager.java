@@ -20,7 +20,7 @@ public class JDBCManager {
             c.createStatement().execute("PRAGMA foreign_keys=ON");
             System.out.println("Database connection opened.");
 
-            this.createTables();
+            // this.createTables();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

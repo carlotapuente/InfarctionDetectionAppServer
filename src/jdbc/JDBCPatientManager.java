@@ -47,10 +47,15 @@ public class JDBCPatientManager implements PatientManager {
     public int getPatientId(String email, String password) throws SQLException {
         String sql = "SELECT patientId FROM patients WHERE email = ? AND password = ?";
         PreparedStatement prep = manager.getConnection().prepareStatement(sql);
+        int patientId = 0;
         prep.setString(1, email);
-        prep.setString(1, password);
+        prep.setString(2, password);
         ResultSet rs = prep.executeQuery();
-        int patientId = rs.getInt("patientId");
+        while(rs.next()){
+        patientId = rs.getInt("patientId");
+        }
+        prep.close();
+        rs.close();
         return patientId;   
     }
     
@@ -101,6 +106,7 @@ public class JDBCPatientManager implements PatientManager {
             p = new Patient(id, name, surname, gender, birthDate, bloodType, email, password, symptoms, bitalino);
             patients.add(p);
         }
+        prep.close();
         rs.close();
         return patients;
     }
@@ -127,6 +133,7 @@ public class JDBCPatientManager implements PatientManager {
             p = new Patient(id, name, surname, gender, birthDate, bloodType, email, password, symptoms, bitalino);
             patients.add(p);
         }
+        prep.close();
         rs.close();
         return patients;
     }
