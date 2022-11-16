@@ -111,18 +111,7 @@ public class ServerThreadsClient implements Runnable {
 
     public void register() throws IOException, SQLException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        String line;
-        String[] atributes = new String[10];
-        //System.out.println(bufferedReader.readLine());
-        //System.out.println(bufferedReader.readLine());
-        /*for(int i = 0; i<10; i++){
-        //while ((line = bufferedReader.readLine()) != null) {
-            atributes[i] = bufferedReader.readLine();
-//atributes.add(line);
-            
-        }*/
-        //System.out.println(atributes);
-        //int patientId = Integer.parseInt(bufferedReader.readLine());
+
         String name = bufferedReader.readLine();
         System.out.println(name);
         String surname = bufferedReader.readLine();
@@ -130,8 +119,6 @@ public class ServerThreadsClient implements Runnable {
         String gender = bufferedReader.readLine();
         System.out.println(gender);
 
-        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-DD");
-        //LocalDate d = LocalDate.parse(bufferedReader.readLine(), formatter);
         Date birthDate = Date.valueOf(bufferedReader.readLine());
         System.out.println(birthDate);
         String bloodType = bufferedReader.readLine();
@@ -143,18 +130,6 @@ public class ServerThreadsClient implements Runnable {
         String bitalino = bufferedReader.readLine();
         System.out.println(bitalino);
 
-        /*System.out.println(name);
-        String surname = atributes[2];
-        System.out.println(surname);
-        String gender = atributes[3];
-        System.out.println(gender);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-DD");
-        LocalDate birthDate = LocalDate.parse(atributes[4], formatter);
-        String bloodType = atributes[5];
-        String email = atributes[6];
-        byte[] password = atributes[7].getBytes();
-        String symptoms = atributes[8];
-        String bitalino = atributes[9];*/
         Patient patient = new Patient(name, surname, gender, birthDate, bloodType, email, password, symptoms, bitalino);
         System.out.println(patient);
         patientManager.addPatient(patient);
@@ -196,8 +171,10 @@ public class ServerThreadsClient implements Runnable {
         //Patient patient;
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         int patientId = bufferedReader.read();
+        System.out.println(patientId);
         Patient patient = patientManager.searchPatientById(patientId);
         String patientSend = patient.toString2();
+        System.out.println(patientSend);
         PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
         printWriter.println(patientSend);
     }

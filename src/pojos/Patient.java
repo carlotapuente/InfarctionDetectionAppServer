@@ -191,7 +191,7 @@ public class Patient implements Serializable {
     }
 
     public String toString2() {
-        return patientId + "\n" + name + "\n" + surname + "\n" + gender + "\n" + birthDate + "\n" + bloodType
+        return patientId + "\n" + name + "\n" + surname + "\n" + gender + "\n" + birthDate.toLocalDate() + "\n" + bloodType
                 + "\n" + email + "\n" + password + "\n" + symptoms + "\n" + bitalino;
     }
 
