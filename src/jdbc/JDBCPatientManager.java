@@ -43,24 +43,30 @@ public class JDBCPatientManager implements PatientManager {
     }
 
     @Override
-    public int getPatientId(String email, String password) {
+    public int getPatientId(String email, String password) throws SQLException, NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(password.getBytes());
+        byte[] hash = md.digest();
+        int patientId= 0;
         String sql = "SELECT patientId FROM patients WHERE email = ? AND password = ?";
-        try {
-            PreparedStatement prep = manager.getConnection().prepareStatement(sql);
-            int patientId = 0;
-            prep.setString(1, email);
-            prep.setString(2, password);
-            ResultSet rs = prep.executeQuery();
-            while (rs.next()) {
-                patientId = rs.getInt("patientId");
-                return patientId;
-            }
-            prep.close();
-            rs.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        PreparedStatement prep = manager.getConnection().prepareStatement(sql);
+        prep.setString(1, email);
+        prep.setBytes(2, hash);
+        ResultSet rs = prep.executeQuery();
+
+        //String sql = "SELECT patientId FROM patients WHERE email = ? AND password = ?";
+        //PreparedStatement prep = manager.getConnection().prepareStatement(sql);
+        //int patientId =9;
+        //prep.setString(1, email);
+        //prep.setString(2, password);
+        //ResultSet rs = prep.executeQuery();
+        while (rs.next()) {
+        patientId = rs.getInt("patientId");
+        //return patientId;
         }
-        return 0;
+        rs.close();
+        prep.close();
+        return patientId;
     }
 
     @Override

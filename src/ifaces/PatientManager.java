@@ -4,6 +4,7 @@
  */
 package ifaces;
 
+import java.security.NoSuchAlgorithmException;
 import pojos.Patient;
 import java.sql.*;
 import java.util.List;
@@ -22,7 +23,7 @@ public interface PatientManager {
 	
     public Patient searchPatientById(int patientId) throws SQLException, Exception;
     
-    public int getPatientId(String email, String password) throws SQLException;
+    public int getPatientId(String email, String password) throws SQLException , NoSuchAlgorithmException;
     
     public String getPatientsFullNameById(int patientId) throws SQLException; 
 

@@ -11,6 +11,7 @@ package threadServer;
  */
 import java.io.*;
 import java.net.Socket;
+import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import pojos.*;
@@ -51,14 +52,14 @@ public class ServerThreadsClient implements Runnable {
                     e.printStackTrace();
                 }
                 switch (opcion) {
-                    /*case 1:
+                    case 1:
                     try{
                         sendPatient();
                     }catch(IOException | SQLException e){
                         e.printStackTrace();
                     }
                     break;
-                case 2:
+                /*case 2:
                     try{
                         sendPatientsFileNames();
                     }catch(IOException | SQLException e){
@@ -84,8 +85,11 @@ public class ServerThreadsClient implements Runnable {
                         login();
                     } catch (IOException | SQLException e) {
                         e.printStackTrace();
+                    } catch (NoSuchAlgorithmException ex) {
+                        Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     break;
+
                 }
             } catch (IOException ex) {
                 Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -157,11 +161,13 @@ public class ServerThreadsClient implements Runnable {
         System.out.println(patient);
     }
 
-    public void login() throws IOException, SQLException {
+    public void login() throws IOException, SQLException, NoSuchAlgorithmException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         String email = bufferedReader.readLine();
         String password = bufferedReader.readLine();
+        System.out.println(" "+ email +  " "+ password);
         int patientId = patientManager.getPatientId(email, password);
+        System.out.println("Patient id: " + patientId);
         PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
         printWriter.println(patientId);
     }
@@ -187,10 +193,10 @@ public class ServerThreadsClient implements Runnable {
     }
 
     public void sendPatient() throws IOException, SQLException {
-        Patient patient = null;
+        //Patient patient;
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         int patientId = bufferedReader.read();
-        patient = patientManager.searchPatientById(patientId);
+        Patient patient = patientManager.searchPatientById(patientId);
         String patientSend = patient.toString2();
         PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
         printWriter.println(patientSend);
