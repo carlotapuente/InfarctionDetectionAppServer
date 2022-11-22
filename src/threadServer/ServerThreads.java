@@ -25,16 +25,14 @@ public class ServerThreads {
         ServerSocket serverSocket = new ServerSocket(9000);
         //Socket socket1 = serverSocket.accept();
         //new Thread(new ThreadToReadFromKeyboard(socket1).start());      
-        try {
+
             while (true) {
-                //Thie executes when we have a client
-                Socket socket = serverSocket.accept();
-                new Thread(new ServerThreadsClient(socket)).start();
+                    //Thie executes when we have a client
+                    Socket socket = serverSocket.accept();
+                    new Thread(new ServerThreadsClient(socket)).start();
+
             }
-        
-        }catch(SocketException e){
-            e.printStackTrace();
-        }
+
         
         /*finally {
             releaseResourcesServer(serverSocket);

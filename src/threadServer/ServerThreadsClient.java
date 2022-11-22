@@ -42,65 +42,56 @@ public class ServerThreadsClient implements Runnable {
     public void run() {
         //BufferedReader bufferedReader = null;
         InputStream inputStream = null;
-        while (true) {
+        try {
+            inputStream = socket.getInputStream();
             try {
-                inputStream = socket.getInputStream();
-                int opcion = 0;
-                try {
-                    opcion = inputStream.read();
-                    System.out.println(opcion);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                switch (opcion) {
-                    case 1:
-                    try{
-                        sendPatient();
-                    }catch(IOException | SQLException e){
-                        e.printStackTrace();
-                    }
-                    break;
-                /*case 2:
-                    try{
+                while (true) {
+
+                    int opcion = 0;
+                        opcion = inputStream.read();
+                        System.out.println(opcion);
+
+                    switch (opcion) {
+                        case 1:
+                    try {
+                            sendPatient();
+                        } catch (IOException | SQLException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                        /*case 2:
                         sendPatientsFileNames();
-                    }catch(IOException | SQLException e){
-                        e.printStackTrace();
-                    }
                     break;
                 case 3:
-                    try{
                         receiveAndSafeSignal();
-                    }catch(IOException | SQLException e){
-                        e.printStackTrace();
-                    }
                     break;*/
-                    case 4:
+                        case 4:
                     try {
-                        register();
-                    } catch (IOException | SQLException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                    case 5:
-                    try {
-                        login();
-                        
-                    } catch (IOException | SQLException e) {
-                        e.printStackTrace();
-                    } catch (NoSuchAlgorithmException ex) {
-                        Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    break;
-                    case 6:
-                        releaseResourcesClient(inputStream, socket);
+                            register();
+                        } catch (IOException | SQLException e) {
+                            e.printStackTrace();
+                        }
                         break;
+                        case 5:
+                    try {
+                            login();
 
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (IOException | SQLException e) {
+                            e.printStackTrace();
+                        } catch (NoSuchAlgorithmException ex) {
+                            Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        break;
+                        case 6:
+                            releaseResourcesClient(inputStream, socket);
+                            break;
+
+                    }
+               /* }catch (IOException ex) {
+                Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);*/
             }
-            //finally {
-            /*try {
+                //finally {
+                /*try {
                 bufferedReader.close();
             } catch (IOException ex) {
                 Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -110,9 +101,18 @@ public class ServerThreadsClient implements Runnable {
             } catch (IOException ex) {
                 Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
             }*/
-            //}
+                //}
+            
+            } catch (SocketException ex) {
+                System.out.println("client closed");
+            }
+
+        }//catch(IOException | SQLException e){
+        catch(IOException e){
+            e.printStackTrace();
         }
     }
+    
 
     public void register() throws IOException, SQLException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -129,7 +129,7 @@ public class ServerThreadsClient implements Runnable {
         String bloodType = bufferedReader.readLine();
         String email = bufferedReader.readLine();
         String password = bufferedReader.readLine();
-        
+
         System.out.println(password);
         String symptoms = bufferedReader.readLine();
         System.out.println(symptoms);
@@ -147,7 +147,7 @@ public class ServerThreadsClient implements Runnable {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         String email = bufferedReader.readLine();
         String password = bufferedReader.readLine();
-        System.out.println(" "+ email +  " "+ password);
+        System.out.println(" " + email + " " + password);
         int patientId = patientManager.getPatientId(email, password);
         System.out.println("Patient id: " + patientId);
         OutputStream os = socket.getOutputStream();
@@ -156,7 +156,7 @@ public class ServerThreadsClient implements Runnable {
         /*
         PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
         printWriter.println(patientId);
-        */
+         */
     }
 
     public void receiveAndSafeSignal() throws IOException, SQLException {
@@ -214,8 +214,8 @@ public class ServerThreadsClient implements Runnable {
             Logger.getLogger(ServerThreads.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-        private static void releaseResourcesClient(BufferedReader bufferedReader, Socket socket) {
+
+    private static void releaseResourcesClient(BufferedReader bufferedReader, Socket socket) {
         try {
             bufferedReader.close();
         } catch (IOException ex) {
