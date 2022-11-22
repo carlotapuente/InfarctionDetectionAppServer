@@ -11,6 +11,7 @@ package threadServer;
  */
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -83,12 +84,16 @@ public class ServerThreadsClient implements Runnable {
                     case 5:
                     try {
                         login();
+                        
                     } catch (IOException | SQLException e) {
                         e.printStackTrace();
                     } catch (NoSuchAlgorithmException ex) {
                         Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     break;
+                    case 6:
+                        releaseResourcesClient(inputStream, socket);
+                        break;
 
                 }
             } catch (IOException ex) {
@@ -196,7 +201,21 @@ public class ServerThreadsClient implements Runnable {
         printWriter.println(fileNames);
     }
 
-    private static void releaseResourcesClient(BufferedReader bufferedReader, Socket socket) {
+    private static void releaseResourcesClient(InputStream inputStream, Socket socket) {
+        try {
+            inputStream.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ServerThreads.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        try {
+            socket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ServerThreads.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+        private static void releaseResourcesClient(BufferedReader bufferedReader, Socket socket) {
         try {
             bufferedReader.close();
         } catch (IOException ex) {
