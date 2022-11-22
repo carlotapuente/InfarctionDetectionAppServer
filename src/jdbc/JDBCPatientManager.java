@@ -48,10 +48,11 @@ public class JDBCPatientManager implements PatientManager {
         md.update(password.getBytes());
         byte[] hash = md.digest();
         int patientId= 0;
-        String sql = "SELECT patientId FROM patients WHERE email = ? AND password = ?";
+        //String sql = "SELECT patientId FROM patients WHERE email = ? AND password = ?";
+        String sql = "SELECT patientId FROM patients WHERE email = ?";
         PreparedStatement prep = manager.getConnection().prepareStatement(sql);
         prep.setString(1, email);
-        prep.setBytes(2, hash);
+        //prep.setBytes(2, hash);
         ResultSet rs = prep.executeQuery();
 
         //String sql = "SELECT patientId FROM patients WHERE email = ? AND password = ?";

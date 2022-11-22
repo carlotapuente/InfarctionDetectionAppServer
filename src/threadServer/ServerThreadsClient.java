@@ -124,6 +124,7 @@ public class ServerThreadsClient implements Runnable {
         String bloodType = bufferedReader.readLine();
         String email = bufferedReader.readLine();
         byte[] password = bufferedReader.readLine().getBytes();
+        
         System.out.println(password);
         String symptoms = bufferedReader.readLine();
         System.out.println(symptoms);
@@ -137,14 +138,20 @@ public class ServerThreadsClient implements Runnable {
     }
 
     public void login() throws IOException, SQLException, NoSuchAlgorithmException {
+
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         String email = bufferedReader.readLine();
         String password = bufferedReader.readLine();
         System.out.println(" "+ email +  " "+ password);
         int patientId = patientManager.getPatientId(email, password);
         System.out.println("Patient id: " + patientId);
+        OutputStream os = socket.getOutputStream();
+        DataOutputStream dos = new DataOutputStream(os);
+        dos.writeInt(patientId);
+        /*
         PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
         printWriter.println(patientId);
+        */
     }
 
     public void receiveAndSafeSignal() throws IOException, SQLException {

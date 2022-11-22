@@ -19,7 +19,7 @@ public class JDBCManager {
             c = DriverManager.getConnection("jdbc:sqlite:./db/ServerApp.db");
             c.createStatement().execute("PRAGMA foreign_keys=ON");
             System.out.println("Database connection opened.");
-             //this.createTables();
+            this.createTables();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -51,7 +51,7 @@ public class JDBCManager {
                     + "	birthDate DATE NOT NULL,"                   
                     + " bloodType TEXT NOT NULL,"
                     + "	email TEXT NOT NULL,"
-                    + " password TEXT NOT NULL,"
+                    + " password BINARY NOT NULL,"
                     + "	symptoms TEXT NOT NULL,"
                     + "	bitalino TEXT NOT NULL)" ;
                                
@@ -62,6 +62,7 @@ public class JDBCManager {
                     + "	patientId INTEGER REFERENCES patients(patientId) ON DELETE CASCADE )";
                     
             stmt.executeUpdate(sql);
+            System.out.println("Tables created");
         } catch (SQLException e) {
             if (!e.getMessage().contains("Already exists")) {
                 e.printStackTrace();
