@@ -35,9 +35,9 @@ public class JDBCPatientManager implements PatientManager {
         prep.setDate(4, p.getBirthDate());
         prep.setString(5, p.getBloodType());
         prep.setString(6, p.getEmail());
-        String pw = new String(p.getPassword(), 0, p.getPassword().length);
-        prep.setString(7, pw);
-        System.out.println("pw" + pw);
+        //String pw = new String(p.getPassword(), 0, p.getPassword().length);
+        prep.setString(7, p.getPassword());
+        //System.out.println("pw" + pw);
         //prep.setBytes(7, p.getPassword());
         prep.setString(8, p.getSymptoms());
         prep.setString(9, p.getBitalino());
@@ -90,7 +90,7 @@ public class JDBCPatientManager implements PatientManager {
             Date birthDate = rs.getDate("birthDate");
             String bloodType = rs.getString("bloodType");
             String email = rs.getString("email");
-            byte[] password = rs.getBytes("password");
+            String password = rs.getString("password");
             String symptoms = rs.getString("symptoms");
             String bitalino = rs.getString("bitalino");
 
@@ -116,7 +116,7 @@ public class JDBCPatientManager implements PatientManager {
             Date birthDate = rs.getDate("birthDate");
             String bloodType = rs.getString("bloodType");
             String email = rs.getString("email");
-            byte[] password = rs.getBytes("password");
+            String password = rs.getString("password");
             String symptoms = rs.getString("symptoms");
             String bitalino = rs.getString("bitalino");
 
@@ -143,7 +143,7 @@ public class JDBCPatientManager implements PatientManager {
             Date birthDate = rs.getDate("birthDate");
             String bloodType = rs.getString("bloodType");
             String email = rs.getString("email");
-            byte[] password = rs.getBytes("password");
+            String password = rs.getString("password");
             String symptoms = rs.getString("symptoms");
             String bitalino = rs.getString("bitalino");
 
@@ -181,7 +181,7 @@ public class JDBCPatientManager implements PatientManager {
             p = new Patient(rs.getInt("patientId"), rs.getString("name"),
                     rs.getString("surname"), rs.getString("gender"),
                     rs.getDate("birthDate"), rs.getString("bloodType"),
-                    rs.getString("email"), rs.getBytes("password"), rs.getString("symptoms"),
+                    rs.getString("email"), rs.getString("password"), rs.getString("symptoms"),
                     rs.getString("bitalino"));
         }
         prep.close();
@@ -205,7 +205,7 @@ public class JDBCPatientManager implements PatientManager {
                 p = new Patient(rs.getInt("patientId"), rs.getString("name"),
                         rs.getString("surname"), rs.getString("gender"),
                         rs.getDate("birthDate"), rs.getString("bloodType"),
-                        rs.getString("email"), rs.getBytes("password"), rs.getString("symptoms"),
+                        rs.getString("email"), rs.getString("password"), rs.getString("symptoms"),
                         rs.getString("bitalino"));
             }
             prep.close();

@@ -128,7 +128,7 @@ public class ServerThreadsClient implements Runnable {
         System.out.println(birthDate);
         String bloodType = bufferedReader.readLine();
         String email = bufferedReader.readLine();
-        byte[] password = bufferedReader.readLine().getBytes();
+        String password = bufferedReader.readLine();
         
         System.out.println(password);
         String symptoms = bufferedReader.readLine();
