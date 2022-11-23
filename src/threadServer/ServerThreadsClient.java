@@ -172,12 +172,13 @@ public class ServerThreadsClient implements Runnable {
         String formattedDateTime = bufferedReader.readLine();
         String line;
         File file = new File("files\\patient" + patientId + "_" + formattedDateTime + ".txt");
-        PrintWriter printWriter = new PrintWriter(new FileWriter(file));
+        PrintWriter printWriter = new PrintWriter(new FileWriter(file), true);
         while ((line = bufferedReader.readLine()) != null) {
             System.out.println(line);
             printWriter.println(line);
         }
         fileManager.addFile(file, patientId);
+        printWriter.close();
         //releaseResourcesClient(bufferedReader, socket);
     }
 
