@@ -201,6 +201,7 @@ public class ServerThreadsClient implements Runnable {
     public void sendPatientsFullNameAndBitalino() throws IOException, SQLException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         int patientId = bufferedReader.read();
+        System.out.println("PatId bitalino: "+patientId);
         String fullName = patientManager.getPatientsFullNameById(patientId);
         String bitalino = patientManager.getPatientsBitalino(patientId);
         PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);

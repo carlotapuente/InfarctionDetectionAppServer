@@ -159,8 +159,8 @@ public class JDBCPatientManager implements PatientManager {
     public String getPatientsFullNameById(int patientId) throws SQLException {
         String sql = "SELECT name, surname FROM patients WHERE patientId = ?";
         PreparedStatement prep = manager.getConnection().prepareStatement(sql);
-        ResultSet rs = prep.executeQuery();
         prep.setInt(1, patientId);
+        ResultSet rs = prep.executeQuery();
         String name = rs.getString("name");
         String surname = rs.getString("surname");
         String fullName = name + " " + surname;
@@ -173,8 +173,8 @@ public class JDBCPatientManager implements PatientManager {
     public String getPatientsBitalino(int patientId) throws SQLException{
         String sql = "SELECT bitalino FROM patients WHERE patientId = ?";
         PreparedStatement prep = manager.getConnection().prepareStatement(sql);
-        ResultSet rs = prep.executeQuery();
         prep.setInt(1, patientId);
+        ResultSet rs = prep.executeQuery();
         String bitalino = rs.getString("bitalino");
         prep.close();
         rs.close();
