@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface FileManager {
     
-    public void addFile(File file, int patientId) throws SQLException;
+    public void addFile(String path, int patientId) throws SQLException;
     
     public File getFileByName(String name) throws SQLException;
     

@@ -30,10 +30,11 @@ public class JDBCFileManager implements FileManager {
     } 
     
     @Override
-    public void addFile(File file, int patientId) throws SQLException{
+    public void addFile(String path, int patientId) throws SQLException{
+        System.out.println("path:" + path);
         String sql = "INSERT INTO files (name, patientId) VALUES (?,?)";
 		PreparedStatement prep = manager.getConnection().prepareStatement(sql);
-		prep.setString(1,file.getName());
+		prep.setString(1,path);
 		prep.setInt(2,patientId);
                 // C:/Users/Carlota/etc...
                 // patients/<PATIENT_ID>/YYYYMMDD-HHMMSS_<PATIENT_ID>.txt

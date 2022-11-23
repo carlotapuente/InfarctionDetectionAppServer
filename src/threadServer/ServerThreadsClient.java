@@ -171,13 +171,18 @@ public class ServerThreadsClient implements Runnable {
         int patientId = Integer.parseInt(bufferedReader.readLine());
         String formattedDateTime = bufferedReader.readLine();
         String line;
+        //String path = "files\\patient" + patientId + "_" + formattedDateTime + ".txt";
         File file = new File("files\\patient" + patientId + "_" + formattedDateTime + ".txt");
+        System.out.println("filepath:" + file.getName());
         PrintWriter printWriter = new PrintWriter(new FileWriter(file), true);
-        while ((line = bufferedReader.readLine()) != null) {
+        //while ((line = bufferedReader.readLine()) != null) { // NO SALE DEL WHILE ????
+        for(int i = 0; i<11; i++){
+            line = bufferedReader.readLine();
             System.out.println(line);
             printWriter.println(line);
         }
-        fileManager.addFile(file, patientId);
+        fileManager.addFile(file.getName(), patientId);
+        System.out.println("fuera while");
         printWriter.close();
         //releaseResourcesClient(bufferedReader, socket);
     }
