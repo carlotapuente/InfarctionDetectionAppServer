@@ -48,8 +48,8 @@ public class ServerThreadsClient implements Runnable {
                 while (true) {
 
                     int opcion = 0;
-                        opcion = inputStream.read();
-                        System.out.println(opcion);
+                    opcion = inputStream.read();
+                    System.out.println(opcion);
 
                     switch (opcion) {
                         case 1:
@@ -61,10 +61,10 @@ public class ServerThreadsClient implements Runnable {
                         break;
                         /*case 2:
                         sendPatientsFileNames();
-                    break;
-                case 3:
-                        receiveAndSafeSignal();
                     break;*/
+                        case 3:
+                            receiveAndSafeSignal();
+                            break;
                         case 4:
                     try {
                             register();
@@ -86,16 +86,16 @@ public class ServerThreadsClient implements Runnable {
                             releaseResourcesClient(inputStream, socket);
                             break;
                         case 7:
-                            try{
-                                sendPatientsFullNameAndBitalino();
-                            }catch(SQLException e){
-                                e.printStackTrace();
-                            }
-                            break;
+                            try {
+                            sendPatientsFullNameAndBitalino();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        break;
                     }
-               /* }catch (IOException ex) {
+                    /* }catch (IOException ex) {
                 Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);*/
-            }
+                }
                 //finally {
                 /*try {
                 bufferedReader.close();
@@ -108,17 +108,18 @@ public class ServerThreadsClient implements Runnable {
                 Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
             }*/
                 //}
-            
+
             } catch (SocketException ex) {
                 System.out.println("client closed");
+            } catch (SQLException ex) {
+                Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }//catch(IOException | SQLException e){
-        catch(IOException e){
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
 
     public void register() throws IOException, SQLException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -167,23 +168,17 @@ public class ServerThreadsClient implements Runnable {
 
     public void receiveAndSafeSignal() throws IOException, SQLException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        int patientId = bufferedReader.read();
+        int patientId = Integer.parseInt(bufferedReader.readLine());
         String formattedDateTime = bufferedReader.readLine();
-        /*LocalDateTime current = LocalDateTime.now();
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy.HH-mm-ss");
-        String formattedDateTime = current.format(format);*/
-        String userHome = System.getProperty("user.home");
-        // patients/<PATIENT_ID>/YYYYMMDD-HHMMSS_<PATIENT_ID>.txt
-        String path = "/patient" + patientId + "_" + formattedDateTime + ".txt";
-        File file = new File(userHome + path);
-        FileWriter fileWriter = null;
-        fileWriter = new FileWriter(file);
+        String line;
+        File file = new File("files\\patient" + patientId + "_" + formattedDateTime + ".txt");
+        PrintWriter printWriter = new PrintWriter(new FileWriter(file));
         while ((line = bufferedReader.readLine()) != null) {
             System.out.println(line);
-            fileWriter.write(line);
+            printWriter.println(line);
         }
         fileManager.addFile(file, patientId);
-        releaseResourcesClient(bufferedReader, socket);
+        //releaseResourcesClient(bufferedReader, socket);
     }
 
     public void sendPatient() throws IOException, SQLException {
@@ -201,7 +196,7 @@ public class ServerThreadsClient implements Runnable {
     public void sendPatientsFullNameAndBitalino() throws IOException, SQLException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         int patientId = bufferedReader.read();
-        System.out.println("PatId bitalino: "+patientId);
+        System.out.println("PatId bitalino: " + patientId);
         String fullName = patientManager.getPatientsFullNameById(patientId);
         String bitalino = patientManager.getPatientsBitalino(patientId);
         PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
