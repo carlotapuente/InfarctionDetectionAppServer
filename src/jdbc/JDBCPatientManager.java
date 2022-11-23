@@ -168,6 +168,18 @@ public class JDBCPatientManager implements PatientManager {
         rs.close();
         return fullName;
     }
+    
+    @Override
+    public String getPatientsBitalino(int patientId) throws SQLException{
+        String sql = "SELECT bitalino FROM patients WHERE patientId = ?";
+        PreparedStatement prep = manager.getConnection().prepareStatement(sql);
+        ResultSet rs = prep.executeQuery();
+        prep.setInt(1, patientId);
+        String bitalino = rs.getString("bitalino");
+        prep.close();
+        rs.close();
+        return bitalino;  
+    }
 
     @Override
     public Patient checkEmail(String email) throws SQLException {

@@ -85,7 +85,13 @@ public class ServerThreadsClient implements Runnable {
                         case 6:
                             releaseResourcesClient(inputStream, socket);
                             break;
-
+                        case 7:
+                            try{
+                                sendPatientsFullNameAndBitalino();
+                            }catch(SQLException e){
+                                e.printStackTrace();
+                            }
+                            break;
                     }
                /* }catch (IOException ex) {
                 Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);*/
@@ -162,9 +168,10 @@ public class ServerThreadsClient implements Runnable {
     public void receiveAndSafeSignal() throws IOException, SQLException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         int patientId = bufferedReader.read();
-        LocalDateTime current = LocalDateTime.now();
+        String formattedDateTime = bufferedReader.readLine();
+        /*LocalDateTime current = LocalDateTime.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy.HH-mm-ss");
-        String formattedDateTime = current.format(format);
+        String formattedDateTime = current.format(format);*/
         String userHome = System.getProperty("user.home");
         // patients/<PATIENT_ID>/YYYYMMDD-HHMMSS_<PATIENT_ID>.txt
         String path = "/patient" + patientId + "_" + formattedDateTime + ".txt";
@@ -191,14 +198,14 @@ public class ServerThreadsClient implements Runnable {
         printWriter.println(patientSend);
     }
 
-    public void sendPatientsFileNames() throws IOException, SQLException {
-        Patient patient = null;
+    public void sendPatientsFullNameAndBitalino() throws IOException, SQLException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         int patientId = bufferedReader.read();
-        List<String> fileNames = new ArrayList<String>();
-        fileNames = fileManager.getPatientsFileNamesById(patientId);
+        String fullName = patientManager.getPatientsFullNameById(patientId);
+        String bitalino = patientManager.getPatientsBitalino(patientId);
         PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
-        printWriter.println(fileNames);
+        printWriter.println(fullName);
+        printWriter.println(bitalino);
     }
 
     private static void releaseResourcesClient(InputStream inputStream, Socket socket) {

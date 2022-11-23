@@ -32,5 +32,7 @@ public interface PatientManager {
     public Patient checkEmail(String email) throws SQLException;
     
     public void UpdatePatient(Patient p, byte[] hash) throws SQLException;
+    
+    public String getPatientsBitalino(int patientId) throws SQLException;
 
 }
