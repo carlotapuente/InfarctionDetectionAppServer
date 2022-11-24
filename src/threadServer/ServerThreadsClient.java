@@ -60,8 +60,8 @@ public class ServerThreadsClient implements Runnable {
                         }
                         break;
                         case 2:
-                        sendPatientsFileNames();
-                    break;
+                            sendPatientsFileNames();
+                            break;
                         case 3:
                             receiveAndSafeSignal();
                             break;
@@ -92,6 +92,10 @@ public class ServerThreadsClient implements Runnable {
                             e.printStackTrace();
                         }
                         break;
+
+                        case 8:
+                            sendCheck();
+                            break;
                     }
                     /* }catch (IOException ex) {
                 Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);*/
@@ -166,7 +170,7 @@ public class ServerThreadsClient implements Runnable {
          */
     }
 
-    public void sendPatientsFileNames()throws IOException, SQLException{
+    public void sendPatientsFileNames() throws IOException, SQLException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         int patientId = bufferedReader.read();
         System.out.println("pId for fileNames: " + patientId);
@@ -175,7 +179,7 @@ public class ServerThreadsClient implements Runnable {
         PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
         printWriter.println(fileNames);
     }
-    
+
     public void receiveAndSafeSignal() throws IOException, SQLException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         int patientId = Integer.parseInt(bufferedReader.readLine());
@@ -186,7 +190,7 @@ public class ServerThreadsClient implements Runnable {
         System.out.println("filepath:" + file.getName());
         PrintWriter printWriter = new PrintWriter(new FileWriter(file), true);
         //while ((line = bufferedReader.readLine()) != null) { // NO SALE DEL WHILE ????
-        for(int i = 0; i<11; i++){
+        for (int i = 0; i < 11; i++) {
             line = bufferedReader.readLine();
             System.out.println(line);
             printWriter.println(line);
@@ -246,5 +250,14 @@ public class ServerThreadsClient implements Runnable {
         } catch (IOException ex) {
             Logger.getLogger(ServerThreads.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void sendCheck() throws SQLException, IOException {
+        BufferedReader bufferedReader;
+        bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        String email = bufferedReader.readLine();
+        String checkemail = patientManager.checkEmail(email);
+        PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
+        printWriter.println(checkemail);
     }
 }

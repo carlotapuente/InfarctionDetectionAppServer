@@ -182,23 +182,19 @@ public class JDBCPatientManager implements PatientManager {
     }
 
     @Override
-    public Patient checkEmail(String email) throws SQLException {
-        Patient p = null;
-        String sql = "SELECT * FROM patients WHERE email = ?";
+    public String checkEmail(String email) throws SQLException {
+        String checkemail = "";
+        String sql = "SELECT email FROM patients WHERE email = ?";
         PreparedStatement prep = manager.getConnection().prepareStatement(sql);
         prep.setString(1, email);
         ResultSet rs = prep.executeQuery();
 
         if (rs.next()) {
-            p = new Patient(rs.getInt("patientId"), rs.getString("name"),
-                    rs.getString("surname"), rs.getString("gender"),
-                    rs.getDate("birthDate"), rs.getString("bloodType"),
-                    rs.getString("email"), rs.getString("password"), rs.getString("symptoms"),
-                    rs.getString("bitalino"));
+            checkemail = rs.getString("email");
         }
         prep.close();
         rs.close();
-        return p;
+        return checkemail;
     }
 
     @Override
