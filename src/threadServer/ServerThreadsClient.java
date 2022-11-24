@@ -59,9 +59,9 @@ public class ServerThreadsClient implements Runnable {
                             e.printStackTrace();
                         }
                         break;
-                        /*case 2:
+                        case 2:
                         sendPatientsFileNames();
-                    break;*/
+                    break;
                         case 3:
                             receiveAndSafeSignal();
                             break;
@@ -166,6 +166,16 @@ public class ServerThreadsClient implements Runnable {
          */
     }
 
+    public void sendPatientsFileNames()throws IOException, SQLException{
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        int patientId = bufferedReader.read();
+        System.out.println("pId for fileNames: " + patientId);
+        String fileNames = fileManager.getPatientsFileNamesById(patientId);
+        //System.out.println(fileNames);
+        PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
+        printWriter.println(fileNames);
+    }
+    
     public void receiveAndSafeSignal() throws IOException, SQLException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         int patientId = Integer.parseInt(bufferedReader.readLine());

@@ -53,19 +53,24 @@ public class JDBCFileManager implements FileManager {
     }
     
     @Override
-    public List<String> getPatientsFileNamesById(int patientId) throws SQLException {
+    public String getPatientsFileNamesById(int patientId) throws SQLException {
         String sql = "SELECT * FROM files WHERE patientId = ?";
         PreparedStatement prep = manager.getConnection().prepareStatement(sql);
         prep.setInt(1, patientId);
-        List<String> fileNames = new ArrayList<String>();
+        String fileNames = "";
+        //List<String> fileNames = new ArrayList<String>();
         ResultSet rs = prep.executeQuery();
-		
+        
         while (rs.next()) {
-                String name = rs.getString("name");
-                fileNames.add(name);		
+                String name= rs.getString("name");      
+                //fileNames.add(name);		
+                fileNames = fileNames + "\n" + name;
+                
         }
-        prep.close();
+        System.out.println("fileNames: " + fileNames);
         rs.close();
-        return fileNames;  
+        prep.close();
+        //return fileNames;  
+        return fileNames;
     }
 }

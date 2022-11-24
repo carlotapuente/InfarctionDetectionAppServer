@@ -18,6 +18,6 @@ public interface FileManager {
     
     public File getFileByName(String name) throws SQLException;
     
-    public List<String> getPatientsFileNamesById(int patientId) throws SQLException;
+    public String getPatientsFileNamesById(int patientId) throws SQLException;
   
 }
