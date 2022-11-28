@@ -97,21 +97,8 @@ public class ServerThreadsClient implements Runnable {
                             sendCheck();
                             break;
                     }
-                    /* }catch (IOException ex) {
-                Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);*/
+
                 }
-                //finally {
-                /*try {
-                bufferedReader.close();
-            } catch (IOException ex) {
-                Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
- /*try {
-                inputStream.close();
-            } catch (IOException ex) {
-                Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
-                //}
 
             } catch (SocketException ex) {
                 System.out.println("client closed");
