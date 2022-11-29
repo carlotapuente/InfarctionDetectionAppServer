@@ -27,24 +27,22 @@ public class ServerThreads {
     private static Socket socket;
 
     public static void main(String args[]) throws IOException {
-        //Create a service that is waiting in port 9000
 
         serverSocket = new ServerSocket(9000);
-        Socket socket1 = serverSocket.accept();
-        new Thread(new ThreadToReadFromKeyboard(socket1)).start();  
+        //Socket socket1 = serverSocket.accept();
+        //new Thread(new ThreadToReadFromKeyboard(socket1)).start();  
         
         String option;
 
         while (true) {
-            //Thie executes when we have a client
             Socket socket = serverSocket.accept();
             Thread t = new Thread(new ServerThreadsClient(socket));
             t.start();
             threadList.add(t);
         
 
-            System.out.println("1. Close the server.");
-            option = InputOutput.get_String();
+            //System.out.println("1. Close the server.");
+            //option = InputOutput.get_String();
 
             /*if (option.equals("1")) {
                 System.out.println("Admin password: \n");

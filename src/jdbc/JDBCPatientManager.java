@@ -35,10 +35,7 @@ public class JDBCPatientManager implements PatientManager {
         prep.setDate(4, p.getBirthDate());
         prep.setString(5, p.getBloodType());
         prep.setString(6, p.getEmail());
-        //String pw = new String(p.getPassword(), 0, p.getPassword().length);
         prep.setString(7, p.getPassword());
-        //System.out.println("pw" + pw);
-        //prep.setBytes(7, p.getPassword());
         prep.setString(8, p.getSymptoms());
         prep.setString(9, p.getBitalino());
         prep.executeUpdate();
@@ -47,29 +44,18 @@ public class JDBCPatientManager implements PatientManager {
 
     @Override
     public int getPatientId(String email, String password) throws SQLException, NoSuchAlgorithmException {
-        System.out.println("hola");
         MessageDigest md = MessageDigest.getInstance("MD5");
         md.update(password.getBytes());
         byte[] hash = md.digest();
         String pw = new String(hash, 0, hash.length);
-        System.out.println("pw:" + pw);
-        int patientId= 0;
+        int patientId = 0;
         String sql = "SELECT patientId FROM patients WHERE email = ? AND password = ?";
-        //String sql = "SELECT patientId FROM patients WHERE email = ? ";
         PreparedStatement prep = manager.getConnection().prepareStatement(sql);
         prep.setString(1, email);
         prep.setString(2, pw);
         ResultSet rs = prep.executeQuery();
-
-        //String sql = "SELECT patientId FROM patients WHERE email = ? AND password = ?";
-        //PreparedStatement prep = manager.getConnection().prepareStatement(sql);
-        //int patientId =9;
-        //prep.setString(1, email);
-        //prep.setString(2, password);
-        //ResultSet rs = prep.executeQuery();
         while (rs.next()) {
-        patientId = rs.getInt("patientId");
-        //return patientId;
+            patientId = rs.getInt("patientId");
         }
         rs.close();
         prep.close();
@@ -168,9 +154,9 @@ public class JDBCPatientManager implements PatientManager {
         rs.close();
         return fullName;
     }
-    
+
     @Override
-    public String getPatientsBitalino(int patientId) throws SQLException{
+    public String getPatientsBitalino(int patientId) throws SQLException {
         String sql = "SELECT bitalino FROM patients WHERE patientId = ?";
         PreparedStatement prep = manager.getConnection().prepareStatement(sql);
         prep.setInt(1, patientId);
@@ -178,7 +164,7 @@ public class JDBCPatientManager implements PatientManager {
         String bitalino = rs.getString("bitalino");
         prep.close();
         rs.close();
-        return bitalino;  
+        return bitalino;
     }
 
     @Override
@@ -222,9 +208,6 @@ public class JDBCPatientManager implements PatientManager {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        /*catch (NoResultException nre) {
-            return null;
-        }*/
         return null;
     }
 

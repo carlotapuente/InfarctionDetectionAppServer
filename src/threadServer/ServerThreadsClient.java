@@ -26,13 +26,11 @@ import java.util.List;
 
 public class ServerThreadsClient implements Runnable {
 
-    //int byteRead;
     Socket socket;
     String line;
     JDBCManager jdbcManager = new JDBCManager();
     JDBCFileManager fileManager = new JDBCFileManager(jdbcManager);
     JDBCPatientManager patientManager = new JDBCPatientManager(jdbcManager);
-    //fileManager.setPatientManager(patientManager);
 
     public ServerThreadsClient(Socket socket) {
         this.socket = socket;
@@ -40,7 +38,6 @@ public class ServerThreadsClient implements Runnable {
 
     @Override
     public void run() {
-        //BufferedReader bufferedReader = null;
         InputStream inputStream = null;
         try {
             inputStream = socket.getInputStream();
@@ -106,8 +103,7 @@ public class ServerThreadsClient implements Runnable {
                 Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-        }//catch(IOException | SQLException e){
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -145,24 +141,16 @@ public class ServerThreadsClient implements Runnable {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         String email = bufferedReader.readLine();
         String password = bufferedReader.readLine();
-        System.out.println(" " + email + " " + password);
         int patientId = patientManager.getPatientId(email, password);
-        System.out.println("Patient id: " + patientId);
         OutputStream os = socket.getOutputStream();
         DataOutputStream dos = new DataOutputStream(os);
         dos.writeInt(patientId);
-        /*
-        PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
-        printWriter.println(patientId);
-         */
     }
 
     public void sendPatientsFileNames() throws IOException, SQLException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         int patientId = bufferedReader.read();
-        System.out.println("pId for fileNames: " + patientId);
         String fileNames = fileManager.getPatientsFileNamesById(patientId);
-        //System.out.println(fileNames);
         PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
         printWriter.println(fileNames);
     }
@@ -172,24 +160,19 @@ public class ServerThreadsClient implements Runnable {
         int patientId = Integer.parseInt(bufferedReader.readLine());
         String formattedDateTime = bufferedReader.readLine();
         String line;
-        //String path = "files\\patient" + patientId + "_" + formattedDateTime + ".txt";
         File file = new File("files\\patient" + patientId + "_" + formattedDateTime + ".txt");
-        System.out.println("filepath:" + file.getName());
         PrintWriter printWriter = new PrintWriter(new FileWriter(file), true);
-        //while ((line = bufferedReader.readLine()) != null) { // NO SALE DEL WHILE ????
-        for (int i = 0; i < 11; i++) {
+        while ((line = bufferedReader.readLine()) != null) { 
+        
             line = bufferedReader.readLine();
-            System.out.println(line);
+            
             printWriter.println(line);
         }
         fileManager.addFile(file.getName(), patientId);
-        System.out.println("fuera while");
         printWriter.close();
-        //releaseResourcesClient(bufferedReader, socket);
     }
 
     public void sendPatient() throws IOException, SQLException {
-        //Patient patient;
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         int patientId = bufferedReader.read();
         System.out.println(patientId);
@@ -203,7 +186,6 @@ public class ServerThreadsClient implements Runnable {
     public void sendPatientsFullNameAndBitalino() throws IOException, SQLException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         int patientId = bufferedReader.read();
-        System.out.println("PatId bitalino: " + patientId);
         String fullName = patientManager.getPatientsFullNameById(patientId);
         String bitalino = patientManager.getPatientsBitalino(patientId);
         PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
