@@ -6,13 +6,9 @@ package jdbc;
 
 import ifaces.*;
 import java.io.File;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import pojos.Patient;
 
 /**
  *
@@ -39,7 +35,6 @@ public class JDBCFileManager implements FileManager {
         prep.setInt(2, patientId);
         prep.executeUpdate();
         prep.close();
-
     }
 
     @Override

@@ -18,22 +18,16 @@ import ui.InputOutput;
  */
 public class ThreadToReadFromKeyboard implements Runnable {
 
-    Socket socket;
-
-    public ThreadToReadFromKeyboard(Socket socket) {
-        this.socket = socket;
-    }
-
     @Override
     public void run() {
         ServerThreads st = new ServerThreads();
         String option = null;
         while (true) {
             
-            System.out.println("1. Close the server.");
+            System.out.println("Press X if you want to close the server ");
           option = InputOutput.get_String();
 
-            if (option.equals("1")) {
+            if (option.equalsIgnoreCase("x")) {
                 System.out.println("Admin password: \n");
                 String password = InputOutput.get_String();
                 if (password.equals("12345")) {
@@ -42,34 +36,16 @@ public class ThreadToReadFromKeyboard implements Runnable {
                         st.releaseResourcesServer(st.getServerSocket());
                         System.exit(0);
                     } else {
-                        System.out.println("There are " + st.sendClientsAlive() + " clients still connected. \n Are you sure you want to close the server? Y/N");
+                        System.out.println("There are " + st.sendClientsAlive() + " clients still connected. \n Are you sure you want to close the server? Press X to accept");
                         option = InputOutput.get_String();
-                        if (option.equals("Y")) {
+                        if (option.equalsIgnoreCase("x")){
                             System.out.println("The server has been closed successfully");
-                            st.releaseResourcesServer(st.getServerSocket(), st.getSocket());
+                            st.releaseResourcesServer(st.getServerSocket());
                             System.exit(0);
                         }
                     }
                 }
             }
-        }
-    }
-
-    public static void releaseResources(ServerSocket serverSocket, Socket socket, Socket socket2) {
-        try {
-            socket.close();
-        } catch (IOException ex) {
-            Logger.getLogger(ServerThreads.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            socket2.close();
-        } catch (IOException ex) {
-            Logger.getLogger(ServerThreads.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            serverSocket.close();
-        } catch (IOException ex) {
-            Logger.getLogger(ServerThreads.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
