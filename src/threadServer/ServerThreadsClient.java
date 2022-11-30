@@ -18,16 +18,11 @@ import java.util.logging.Logger;
 import pojos.*;
 import jdbc.*;
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class ServerThreadsClient implements Runnable {
 
     Socket socket;
-    String line;
     JDBCManager jdbcManager = new JDBCManager();
     JDBCFileManager fileManager = new JDBCFileManager(jdbcManager);
     JDBCPatientManager patientManager = new JDBCPatientManager(jdbcManager);
@@ -46,7 +41,6 @@ public class ServerThreadsClient implements Runnable {
 
                     int opcion = 0;
                     opcion = inputStream.read();
-                   
 
                     switch (opcion) {
                         case 1:
@@ -92,6 +86,9 @@ public class ServerThreadsClient implements Runnable {
 
                         case 8:
                             sendCheck();
+                            break;
+                        case 9:
+                            sendFiles();
                             break;
                     }
 
@@ -146,6 +143,22 @@ public class ServerThreadsClient implements Runnable {
         printWriter.println("stop");
     }
 
+    public void sendFiles() throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        String fileName = bufferedReader.readLine();
+        File file = new File(fileName);
+        BufferedReader br = new BufferedReader(new FileReader("files\\"+file));
+        PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
+        String line;
+        while ((line = br.readLine()) != null) { // reads the file and sends it to the client
+
+            printWriter.println(line);
+
+        }
+        printWriter.println("stop");
+        br.close();
+    }
+
     public void receiveAndSafeSignal() throws IOException, SQLException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         int patientId = Integer.parseInt(bufferedReader.readLine());
@@ -153,8 +166,11 @@ public class ServerThreadsClient implements Runnable {
         String line;
         File file = new File("files\\patient" + patientId + "_" + formattedDateTime + ".txt");
         PrintWriter printWriter = new PrintWriter(new FileWriter(file), true);
-        while (!((line = bufferedReader.readLine()).equals("stop"))) { 
-            
+        printWriter.println("Patient id: "+patientId);
+        printWriter.println("Date: "+formattedDateTime);
+        
+        while (!((line = bufferedReader.readLine()).equals("stop"))) {
+
             printWriter.println(line);
         }
         fileManager.addFile(file.getName(), patientId);
