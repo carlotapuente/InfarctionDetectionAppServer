@@ -70,12 +70,4 @@ public class JDBCManager {
         stmt.executeUpdate(sql);
         System.out.println("Tables created");
     }
-    
-    public static void main(String[] args) throws SQLException {
-        JDBCManager jdbc = new JDBCManager();
-        JDBCFileManager jdbcf = new JDBCFileManager(jdbc);
-        jdbcf.addFile("whatever", 1);
-        
-        System.out.println("break!");
-    }
 }

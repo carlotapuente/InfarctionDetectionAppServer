@@ -16,7 +16,7 @@ import java.sql.SQLException;
  */
 public class JDBCFileManager implements FileManager {
 
-    private JDBCManager manager;
+    private final JDBCManager manager;
     private PatientManager patientManager;
 
     public JDBCFileManager(JDBCManager m) {

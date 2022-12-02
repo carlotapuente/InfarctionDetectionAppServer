@@ -210,20 +210,6 @@ public class ServerThreadsClient implements Runnable {
         }
     }
 
-    private static void releaseResourcesClient(BufferedReader bufferedReader, Socket socket) {
-        try {
-            bufferedReader.close();
-        } catch (IOException ex) {
-            Logger.getLogger(ServerThreads.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        try {
-            socket.close();
-        } catch (IOException ex) {
-            Logger.getLogger(ServerThreads.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     private void sendCheck() throws SQLException, IOException {
         BufferedReader bufferedReader;
         bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));

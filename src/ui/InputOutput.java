@@ -8,7 +8,6 @@ package ui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import static java.lang.System.in;
 
 /**
  *
@@ -16,16 +15,14 @@ import static java.lang.System.in;
  */
 public class InputOutput {
     
-    private static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+    private static final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     
     public static int get_int() {
 
 		int id = 0;
 		try {
 			id = Integer.parseInt(in.readLine());
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (NumberFormatException | IOException e) {
 			e.printStackTrace();
 		}
 		return id;
@@ -46,10 +43,8 @@ public class InputOutput {
 
 		Float f = null;
 		try {
-			f = Float.parseFloat(in.readLine());
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+			f = Float.valueOf(in.readLine());
+		} catch (NumberFormatException | IOException e) {
 			e.printStackTrace();
 		}
 		return f;

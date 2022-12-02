@@ -7,8 +7,6 @@ package pojos;
 import java.io.Serializable;
 import java.util.Objects;
 import java.sql.Date;
-import java.time.LocalDate;
-import java.util.Arrays;
 
 /**
  *
@@ -22,8 +20,8 @@ public class Patient implements Serializable {
     private String name;
     private String surname;
     private String gender;
-    private Date birthDate;
-    private String bloodType;
+    private final Date birthDate;
+    private final String bloodType;
     private final String email;
     private String password;
     private String symptoms;
@@ -55,11 +53,6 @@ public class Patient implements Serializable {
         this.bitalino = bitalino;
 
     }
-
-   /* public Patient (Integer patientId, String email, byte[] hash) {
-        this.email = email;
-        this.password = hash;
-    }*/
     
     public Integer getPatientId() {
         return patientId;

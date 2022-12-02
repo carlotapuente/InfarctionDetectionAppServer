@@ -8,7 +8,6 @@ import ifaces.PatientManager;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import pojos.Patient;
@@ -19,7 +18,7 @@ import pojos.Patient;
  */
 public class JDBCPatientManager implements PatientManager {
 
-    private JDBCManager manager;
+    private final JDBCManager manager;
 
     public JDBCPatientManager(JDBCManager m) {
         this.manager = m;
@@ -94,7 +93,7 @@ public class JDBCPatientManager implements PatientManager {
         PreparedStatement prep = manager.getConnection().prepareStatement(sql);
         prep.setString(1, name);
         ResultSet rs = prep.executeQuery();
-        List<Patient> patients = new ArrayList<Patient>();
+        List<Patient> patients = new ArrayList<>();
         while (rs.next()) {
             int id = rs.getInt("patientId");
             String surname = rs.getString("surname");
@@ -121,7 +120,7 @@ public class JDBCPatientManager implements PatientManager {
         PreparedStatement prep = manager.getConnection().prepareStatement(sql);
         prep.setString(1, surname);
         ResultSet rs = prep.executeQuery();
-        List<Patient> patients = new ArrayList<Patient>();
+        List<Patient> patients = new ArrayList<>();
         while (rs.next()) {
             int id = rs.getInt("patientId");
             String name = rs.getString("name");
@@ -210,16 +209,4 @@ public class JDBCPatientManager implements PatientManager {
         }
         return null;
     }
-
-    @Override
-    public void UpdatePatient(Patient p, byte[] hash) throws SQLException {
-
-        String sql = "UPDATE patient SET password =? WHERE patientId=?";
-        PreparedStatement prep = manager.getConnection().prepareStatement(sql);
-        prep.setInt(1, p.getPatientId());
-        prep.setBytes(2, hash);
-        prep.executeUpdate();
-
-    }
-
 }

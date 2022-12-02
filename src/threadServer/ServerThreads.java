@@ -10,7 +10,6 @@ package threadServer;
  * @author carlo
  */
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -18,11 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import ui.InputOutput;
 
 public class ServerThreads {
 
-    private static List<Thread> threadList = new ArrayList();
+    private static final List<Thread> threadList = new ArrayList();
     private static ServerSocket serverSocket;
     private static Socket socket;
 
